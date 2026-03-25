@@ -1,6 +1,8 @@
 <script>
   import { fly, fade, scale } from 'svelte/transition';
   let selected = 'gpt4';
+  let scrollY = 0;
+
   const llms = [
     {
       id: 'gpt4',
@@ -8,9 +10,9 @@
       dev: 'OpenAI',
       modalidade: 'Texto/Imagem',
       mmlu: '~86.4%',
-      desc: 'Alta precisão, mais caro/lento',
-      color: 'linear-gradient(120deg, #e0e7ef 0%, #b6bbc9 100%)',
-      icon: '🤖'
+      desc: 'Alta precisão em tarefas complexas',
+      icon: '🤖',
+      cor: '#a3bffa'
     },
     {
       id: 'gpt4o',
@@ -18,9 +20,9 @@
       dev: 'OpenAI',
       modalidade: 'Texto/Imagem/Áudio',
       mmlu: '~88.7%',
-      desc: 'Mais rápido/barato, multimodal',
-      color: 'linear-gradient(120deg, #e0e7ef 0%, #a3bffa 100%)',
-      icon: '🌐'
+      desc: 'Mais rápido, barato e multimodal',
+      icon: '🌐',
+      cor: '#b8f2e6'
     },
     {
       id: 'gpt5mini',
@@ -28,9 +30,9 @@
       dev: 'OpenAI',
       modalidade: 'Texto',
       mmlu: '~80-83%',
-      desc: 'Eficiente, bom custo-benefício',
-      color: 'linear-gradient(120deg, #e0e7ef 0%, #ffe5ec 100%)',
-      icon: '⚡'
+      desc: 'Eficiente e bom custo-benefício',
+      icon: '⚡',
+      cor: '#ffe5ec'
     },
     {
       id: 'raptor',
@@ -38,12 +40,14 @@
       dev: 'Microsoft',
       modalidade: 'Texto',
       mmlu: '~70-75%',
-      desc: 'Otimizado para edge/local',
-      color: 'linear-gradient(120deg, #e0e7ef 0%, #b8f2e6 100%)',
-      icon: '🦖'
+      desc: 'Otimizado para edge e local',
+      icon: '🚀',
+      cor: '#f0d9ff'
     }
   ];
 </script>
+
+<svelte:window bind:scrollY />
 
 <main class="landing-tech">
   <header class="header-tech">
