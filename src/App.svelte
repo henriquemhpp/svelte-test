@@ -49,224 +49,494 @@
 
 <svelte:window bind:scrollY />
 
-<main class="landing-tech">
-  <header class="header-tech">
-    <h1 class="apple-title" in:fly={{y: -40, duration: 800}}>Diferenças entre GPT-4, GPT-4o, GPT-5-mini e Raptor Mini (preview)</h1>
-    <p class="subtitle" in:fade={{duration: 1200}}>Comparativo de LLMs modernas para aplicações em tecnologia</p>
-  </header>
-
-  <section class="llm-cards-immersive">
-    {#each llms as llm}
-      <div
-        class="llm-card-immersive {selected === llm.id ? 'active' : ''}"
-        style="background: {llm.color}"
-        on:click={() => selected = llm.id}
-        in:scale={{duration: 400}}
-        out:fade={{duration: 200}}
-      >
-        <div class="llm-icon">{llm.icon}</div>
-        <h2>{llm.name}</h2>
-        <p class="llm-dev">{llm.dev}</p>
-        <p class="llm-modalidade">{llm.modalidade}</p>
-        <p class="llm-mmlu">MMLU: <b>{llm.mmlu}</b></p>
-        <p class="llm-desc">{llm.desc}</p>
-        {#if selected === llm.id}
-          <div class="llm-highlight" in:fade={{duration: 400}}></div>
-        {/if}
-      </div>
-    {/each}
+<main class="apple-landing">
+  <!-- Hero Section -->
+  <section class="hero-section" style="transform: translateY({scrollY * 0.5}px); opacity: {Math.max(0.3, 1 - scrollY / 800)}">
+    <div class="hero-content">
+      <h1 class="hero-title">Modelos de IA Modernos</h1>
+      <p class="hero-subtitle">Conheça as diferenças entre GPT-4, GPT-4o, GPT-5-mini e Raptor Mini</p>
+    </div>
+    <div class="hero-gradient"></div>
   </section>
 
-  <section class="llm-table-section-immersive" in:fade={{duration: 800}}>
-    <h2>Benchmark Comparativo</h2>
-    <table class="llm-table">
-      <thead>
-        <tr>
-          <th>Modelo</th>
-          <th>MMLU (%)</th>
-          <th>Modalidade</th>
-          <th>Observações</th>
-        </tr>
-      </thead>
-      <tbody>
-        {#each llms as llm}
-        <tr class:selected={selected === llm.id} on:mouseenter={() => selected = llm.id}>
-          <td>{llm.name}</td>
-          <td>{llm.mmlu}</td>
-          <td>{llm.modalidade}</td>
-          <td>{llm.desc}</td>
-        </tr>
-        {/each}
-      </tbody>
-    </table>
+  <!-- Cards Grid -->
+  <section class="cards-grid">
+    <h2 class="section-title">Comparação de Modelos</h2>
+    <div class="cards-wrapper">
+      {#each llms as llm (llm.id)}
+        <div
+          class="apple-card {selected === llm.id ? 'active' : ''}"
+          on:click={() => selected = llm.id}
+          on:mouseenter={() => selected = llm.id}
+          in:fly={{y: 40, duration: 600}}
+        >
+          <div class="card-glass"></div>
+          <div class="card-content">
+            <div class="card-icon" style="color: {llm.cor}">{llm.icon}</div>
+            <h3>{llm.name}</h3>
+            <p class="card-dev">{llm.dev}</p>
+            
+            {#if selected === llm.id}
+              <div class="card-expanded" in:fade={{duration: 300}}>
+                <div class="stat-row">
+                  <span class="stat-label">Modalidade</span>
+                  <span class="stat-value">{llm.modalidade}</span>
+                </div>
+                <div class="stat-row">
+                  <span class="stat-label">Benchmark MMLU</span>
+                  <span class="stat-value mmlu-highlight">{llm.mmlu}</span>
+                </div>
+                <p class="card-desc">{llm.desc}</p>
+              </div>
+            {:else}
+              <p class="card-desc-short">{llm.desc}</p>
+            {/if}
+          </div>
+          <div class="card-accent" style="background-color: {llm.cor}; opacity: {selected === llm.id ? 1 : 0.4}"></div>
+        </div>
+      {/each}
+    </div>
   </section>
 
-  <footer class="footer-tech">
-    <p>Landing page criada com Svelte, tema pastel e tecnologia.</p>
+  <!-- Comparison Table -->
+  <section class="table-section">
+    <h2 class="section-title">Benchmark Comparativo</h2>
+    <div class="table-wrapper">
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>Modelo</th>
+            <th>MMLU</th>
+            <th>Modalidade</th>
+            <th>Descrição</th>
+          </tr>
+        </thead>
+        <tbody>
+          {#each llms as llm}
+            <tr 
+              class:selected-row={selected === llm.id}
+              on:mouseenter={() => selected = llm.id}
+            >
+              <td class="model-name">{llm.name}</td>
+              <td><span class="badge">{llm.mmlu}</span></td>
+              <td>{llm.modalidade}</td>
+              <td>{llm.desc}</td>
+            </tr>
+          {/each}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <h2>Pronto para explorar?</h2>
+    <p>Escolha o modelo ideal para seu projeto de IA</p>
+    <button class="cta-button">Começar Agora</button>
+  </section>
+
+  <footer class="apple-footer">
+    <p>Landing Page • Comparativo de Modelos de IA • 2026</p>
   </footer>
 </main>
 
 <style>
-  .landing-tech {
-    font-family: 'Inter', Arial, sans-serif;
-    background: linear-gradient(120deg, #f8fafc 0%, #e0e7ef 100%);
+  :global(*) {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .apple-landing {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background: linear-gradient(180deg, #ffffff 0%, #f5f5f7 100%);
     min-height: 100vh;
-    color: #232946;
+    color: #1d1d1f;
     padding: 0;
     margin: 0;
-    overflow-x: hidden;
   }
-  .header-tech {
-    text-align: center;
-    padding: 3rem 1rem 2rem 1rem;
-    background: #e0e7ef;
-    border-radius: 0 0 2rem 2rem;
-    box-shadow: 0 2px 24px #b6bbc933;
+
+  /* Hero Section */
+  .hero-section {
     position: relative;
-    z-index: 2;
+    height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    text-align: center;
+    background: radial-gradient(circle at top, #ffffff 0%, #f5f5f7 50%, #efefef 100%);
+    backdrop-filter: blur(10px);
   }
-  .apple-title {
-    font-size: 2.8rem;
+
+  .hero-gradient {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background: radial-gradient(ellipse at center top, rgba(163, 191, 250, 0.15), transparent 60%);
+    pointer-events: none;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    animation: fadeInDown 1s ease-out;
+  }
+
+  .hero-title {
+    font-size: 4.5rem;
     font-weight: 700;
-    letter-spacing: -1px;
-    color: #232946;
-    margin-bottom: 0.5rem;
-    background: linear-gradient(90deg, #232946 60%, #a3bffa 100%);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin: 0 0 1rem 0;
+    background: linear-gradient(135deg, #1d1d1f 0%, #a3bffa 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-  .subtitle {
-    color: #6d6d8b;
-    font-size: 1.25rem;
-    margin-bottom: 0.5rem;
+
+  .hero-subtitle {
+    font-size: 1.5rem;
+    color: #86868b;
     font-weight: 400;
+    margin: 0;
+    max-width: 600px;
   }
-  .llm-cards-immersive {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 2.5rem;
-    margin: 3rem 0 2rem 0;
+
+  /* Cards Section */
+  .cards-grid {
+    padding: 4rem 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .section-title {
+    font-size: 2.5rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 3rem;
+    color: #1d1d1f;
+  }
+
+  .cards-wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
     perspective: 1200px;
   }
-  .llm-card-immersive {
-    background: #f6f6fa;
-    border-radius: 1.5rem;
-    box-shadow: 0 4px 24px #b6bbc933, 0 1.5px 8px #a3bffa22;
-    padding: 2.2rem 1.5rem 1.5rem 1.5rem;
-    min-width: 240px;
-    max-width: 270px;
-    flex: 1 1 240px;
-    transition: transform 0.3s, box-shadow 0.3s, border 0.3s;
-    border: 2.5px solid #e0e7ef;
-    cursor: pointer;
+
+  .apple-card {
     position: relative;
+    height: 380px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(20px);
+    cursor: pointer;
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.320, 1);
     overflow: hidden;
-    transform-style: preserve-3d;
-    will-change: transform;
-    opacity: 0.96;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
   }
-  .llm-card-immersive.active, .llm-card-immersive:hover {
-    transform: scale(1.07) rotateY(-6deg) translateY(-10px);
-    box-shadow: 0 8px 32px #a3bffa55, 0 2px 12px #b6bbc933;
-    border-color: #a3bffa;
-    opacity: 1;
-    z-index: 2;
+
+  .apple-card.active {
+    transform: translateY(-12px) scale(1.02);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    background: rgba(255, 255, 255, 0.95);
   }
-  .llm-icon {
-    font-size: 2.5rem;
-    margin-bottom: 0.7rem;
-    filter: drop-shadow(0 2px 8px #a3bffa33);
+
+  .apple-card:hover:not(.active) {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
   }
-  .llm-card-immersive h2 {
-    color: #232946;
-    font-size: 1.4rem;
-    margin-bottom: 0.3rem;
-    font-weight: 600;
-  }
-  .llm-dev, .llm-modalidade, .llm-mmlu, .llm-desc {
-    color: #6d6d8b;
-    font-size: 1.05rem;
-    margin: 0.2rem 0;
-  }
-  .llm-mmlu b {
-    color: #232946;
-    font-weight: 600;
-  }
-  .llm-highlight {
+
+  .card-glass {
     position: absolute;
-    left: 0; right: 0; bottom: 0;
-    height: 8px;
-    background: linear-gradient(90deg, #a3bffa 0%, #ffe5ec 100%);
-    border-radius: 0 0 1.5rem 1.5rem;
-    box-shadow: 0 2px 8px #a3bffa33;
-    animation: highlightBar 1.2s cubic-bezier(.4,1.6,.6,1) infinite alternate;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 50%);
+    pointer-events: none;
   }
-  @keyframes highlightBar {
-    0% { opacity: 0.7; }
-    100% { opacity: 1; }
+
+  .card-content {
+    position: relative;
+    z-index: 1;
+    padding: 2rem 1.5rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
   }
-  .llm-table-section-immersive {
-    margin: 2.5rem auto 2rem auto;
-    max-width: 800px;
-    background: #f6f6fa;
-    border-radius: 1.2rem;
-    box-shadow: 0 2px 12px #b6bbc933;
-    padding: 2.5rem 1.5rem;
-    animation: fadeIn 1.2s;
+
+  .card-icon {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    transition: transform 0.3s ease;
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.08));
   }
-  .llm-table {
+
+  .apple-card.active .card-icon {
+    transform: scale(1.15) translateY(-8px);
+  }
+
+  .apple-card h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0 0 0.3rem 0;
+    color: #1d1d1f;
+  }
+
+  .card-dev {
+    font-size: 0.95rem;
+    color: #86868b;
+    margin: 0 0 1rem 0;
+  }
+
+  .card-desc-short {
+    color: #555;
+    font-size: 1rem;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .card-expanded {
+    width: 100%;
+    animation: expandCard 0.4s ease;
+  }
+
+  .stat-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    font-size: 0.95rem;
+  }
+
+  .stat-label {
+    color: #86868b;
+    font-weight: 500;
+  }
+
+  .stat-value {
+    color: #1d1d1f;
+    font-weight: 600;
+  }
+
+  .mmlu-highlight {
+    background: linear-gradient(90deg, #a3bffa, #b8f2e6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .card-desc {
+    margin-top: 1rem;
+    color: #555;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .card-accent {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    transition: all 0.5s ease;
+  }
+
+  /* Table Section */
+  .table-section {
+    padding: 4rem 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .table-wrapper {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+  }
+
+  .comparison-table {
     width: 100%;
     border-collapse: collapse;
-    background: #f6f6fa;
-    font-size: 1.08rem;
+    font-size: 1rem;
   }
-  .llm-table th, .llm-table td {
-    border: 1.5px solid #e0e7ef;
-    padding: 0.9rem 0.7rem;
+
+  .comparison-table thead {
+    background: rgba(0, 0, 0, 0.03);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  .comparison-table th {
+    padding: 1.2rem;
+    text-align: left;
+    font-weight: 600;
+    color: #1d1d1f;
+  }
+
+  .comparison-table td {
+    padding: 1.2rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    color: #555;
+    transition: all 0.3s ease;
+  }
+
+  .comparison-table tr.selected-row {
+    background: rgba(163, 191, 250, 0.1);
+  }
+
+  .comparison-table tbody tr:hover {
+    background: rgba(0, 0, 0, 0.02);
+  }
+
+  .model-name {
+    font-weight: 600;
+    color: #1d1d1f;
+  }
+
+  .badge {
+    display: inline-block;
+    background: linear-gradient(90deg, #a3bffa, #b8f2e6);
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  /* CTA Section */
+  .cta-section {
+    padding: 4rem 2rem;
     text-align: center;
-    font-size: 1.08rem;
-    transition: background 0.2s, color 0.2s;
+    background: linear-gradient(135deg, rgba(163, 191, 250, 0.1), rgba(184, 242, 230, 0.1));
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
   }
-  .llm-table th {
-    background: #e0e7ef;
-    color: #232946;
-    font-weight: 700;
+
+  .cta-section h2 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #1d1d1f;
   }
-  .llm-table tr.selected, .llm-table tr:hover {
-    background: linear-gradient(90deg, #a3bffa22 0%, #ffe5ec22 100%);
-    color: #232946;
-  }
-  .footer-tech {
-    text-align: center;
-    padding: 2.5rem 1rem 1.5rem 1rem;
-    color: #6d6d8b;
+
+  .cta-section p {
     font-size: 1.1rem;
-    background: transparent;
-    margin-top: 2rem;
+    color: #86868b;
+    margin-bottom: 2rem;
   }
+
+  .cta-button {
+    padding: 0.8rem 2.5rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(90deg, #a3bffa, #b8f2e6);
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 20px rgba(163, 191, 250, 0.3);
+  }
+
+  .cta-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 30px rgba(163, 191, 250, 0.4);
+  }
+
+  /* Footer */
+  .apple-footer {
+    padding: 2rem;
+    text-align: center;
+    color: #86868b;
+    font-size: 0.95rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  /* Animations */
+  @keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes expandCard {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Responsive */
   @media (max-width: 900px) {
-    .llm-cards-immersive {
-      flex-direction: column;
-      align-items: center;
+    .hero-title {
+      font-size: 3rem;
     }
-    .llm-table-section-immersive {
-      padding: 1.2rem 0.2rem;
+
+    .hero-subtitle {
+      font-size: 1.2rem;
+    }
+
+    .cards-wrapper {
+      grid-template-columns: 1fr;
+    }
+
+    .section-title {
+      font-size: 2rem;
     }
   }
+
   @media (max-width: 600px) {
-    .apple-title {
+    .hero-section {
+      height: 400px;
+    }
+
+    .hero-title {
+      font-size: 2rem;
+    }
+
+    .hero-subtitle {
+      font-size: 1rem;
+    }
+
+    .cards-grid,
+    .table-section,
+    .cta-section {
+      padding: 2rem 1rem;
+    }
+
+    .apple-card {
+      height: auto;
+    }
+
+    .section-title {
       font-size: 1.5rem;
+      margin-bottom: 1.5rem;
     }
-    .llm-card-immersive {
-      min-width: 90vw;
-      max-width: 98vw;
-      padding: 1.2rem 0.5rem;
+
+    .comparison-table {
+      font-size: 0.85rem;
     }
-  }
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(40px); }
-    to { opacity: 1; transform: none; }
+
+    .comparison-table th,
+    .comparison-table td {
+      padding: 0.8rem;
+    }
   }
 </style>
